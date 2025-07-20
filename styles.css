@@ -1,0 +1,42 @@
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #f3f4f6;
+}
+.nav-link {
+    transition: all 0.3s ease;
+}
+.nav-link.active {
+    background: linear-gradient(to right, #1d4ed8, #3b82f6);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.nav-link:hover {
+    background: #1e40af;
+    color: white;
+    transform: translateY(-1px);
+}
+.hero {
+    background: url('https://via.placeholder.com/1920x600') center/cover no-repeat;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.card {
+    background: #1f2937;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+}

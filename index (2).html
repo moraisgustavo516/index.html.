@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Jogo Fifa Mobile</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #effa50, #8cf317, #334155);
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background: #6ead07;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-container h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links input[type="radio"] {
+            display: none;
+        }
+        .nav-links label {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #d1d5db;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .nav-links label:hover {
+            background: #eaec70;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .nav-links input[type="radio"]:checked + label {
+            background: linear-gradient(to right, #1d4ed8, #3b82f6);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .tab-content {
+            display: none;
+            max-width: 1200px;
+            margin: 5rem auto 3rem;
+            padding: 1rem;
+        }
+        #tab-inicio:checked ~ .tab-content#inicio,
+        #tab-sobre:checked ~ .tab-content#sobre,
+        #tab-video:checked ~ .tab-content#video,
+        #tab-dicas:checked ~ .tab-content#dicas,
+        #tab-comentarios:checked ~ .tab-content#comentarios {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero {
+            background: url('https://via.placeholder.com/1920x600') center/cover no-repeat;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero h2 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            color: #e5e7eb;
+            max-width: 800px;
+        }
+        .card {
+            background: #1f2937;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        h3 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #e7e9e6;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        p, ul {
+            font-size: 1.25rem;
+            color: #d1d5db;
+        }
+        img, video, audio {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem auto;
+            display: block;
+        }
+        .player-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #4b5563;
+            border-radius: 8px;
+        }
+        form {
+            max-width: 600px;
+            margin: 1.5rem auto;
+        }
+        label {
+            display: block;
+            font-size: 1.1rem;
+            color: #d1d5db;
+            margin-bottom: 0.5rem;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            background: #374151;
+            color: #f3f4f6;
+            font-size: 1rem;
+        }
+        input[type="file"] {
+            padding: 0.5rem;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        footer {
+            background:  #6ead07;
+            padding: 2rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <input type="radio" name="tab" id="tab-inicio" checked hidden>
+    <input type="radio" name="tab" id="tab-sobre" hidden>
+    <input type="radio" name="tab" id="tab-video" hidden>
+    <input type="radio" name="tab" id="tab-dicas" hidden>
+    <input type="radio" name="tab" id="tab-comentarios" hidden>
+    <nav>
+        <div class="nav-container">
+            <h1>Portal Multimídia</h1>
+            <ul class="nav-links">
+                <li><input type="radio" name="tab" id="tab-inicio-nav" checked hidden><label for="tab-inicio">Início</label></li>
+                <li><input type="radio" name="tab" id="tab-sobre-nav" hidden><label for="tab-sobre">Sobre o Jogo</label></li>
+                <li><input type="radio" name="tab" id="tab-video-nav" hidden><label for="tab-video">Vídeo</label></li>
+                <li><input type="radio" name="tab" id="tab-dicas-nav" hidden><label for="tab-dicas">Dicas e Hacks</label></li>
+                <li><input type="radio" name="tab" id="tab-comentarios-nav" hidden><label for="tab-comentarios">Comentários</label></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Início Section -->
+    <section id="inicio" class="tab-content">
+        <div class="hero">
+            <div>
+                <h2>Bem-vindo ao Portal Fifa Mobile</h2>
+                <p>Explore uma experiência interativa profissional com vídeos, dicas, música e comentários!</p>
+            </div>
+        </div>
+        <section class="card">
+            <h3>Sobre o Portal Fifa Mobile</h3>
+            <p>Este portal oferece uma experiência imersiva sobre um jogo de futebol, jogo online, ganhar recompensas, passar nível, é um jogo da EA SPORTS, aproveite para jogar. e a minha web esta com recursos multimídia avançados, música interativa e áreas para personalização de conteúdo.</p>
+        </section>
+
+        <section class="card">
+            <h3>Fotos de alguns Jogadores que eu tenho</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+                <div>
+                    <label for="Ronaldo Fenomeno">Imagem 1</label>
+                    <img src="foto do jogador Ronaldo Fenomeno.jpg">
+                </div>
+                <div>
+                    <label for="Endrick">Imagem 2</label>
+                    <img src="endrick.jpg"> 
+                </div>
+                <div>
+                    <label for="Kaká">Imagem 3</label>
+                    <img src="Kaká.jpg">
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <h3>Música de Fundo</h3>
+            <audio controls>
+                <source src="Make It Look Easy _ New EA FC Mobile Soundtrack _ Team of the season event _ Full version.m4a" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+        </section>
+    </audio>
+        </section>
+        <section class="card">
+        </section>
+    </section>
+        
+
+    <!-- Sobre Section -->
+    <section id="sobre" class="tab-content">
+        <section class="card">
+            <h3>Sobre o Jogo</h3>
+            <img src="logo do Fifa Mobile.jpg" alt="Imagem do Jogo">
+            <p class="mt-4">Jogo com o tricolor São Paulo FC 🟥⬜⬛ no jogo Fifa Mobile, falando mais sobre o meu time, criado em 25 de janeiro de 1930, usa as cores vermelho, branco e preto
+        estádio dele é o Morumbis, somos tricampeão Mundial, e temos todos os troféus. No jogo eu estou no GER 104, que significa o condiciobnamento bom
+        do meu time, quanto mais voce vai trocando jogador ou ganhou um, voce pode colocar na escalação do seu time, que talvez ele aumenta o GER. Se não
+        aumentar é porque voce já tem no seu time outros jogadores com o mesmo numero de potencial igual mostrado na aba anterior das fotos dos jogadores, cada partida
+        voce pode ganhar recompensas como diamante, jogadores e etc.
+        Este jogo é uma experiência interativa de futebol, jogando com seus amigos, fica ainda melhor, quem gosta desse esporte, recomendo abaixa-lo e se divirta-se!</p>
+            <div class="mt-4">
+                <h4 style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">Detalhes do Jogo</h4>
+                <p>Gênero: Esporte<br>Plataforma:Jogo<br>Desenvolvedor: EA Sports<br>Lançamento: 2016</p>
+            </div>
+        </section>
+        <section class="card">
+            <h3>Música de Fundo</h3>
+            <audio controls>
+                <source src="Make It Look Easy _ New EA FC Mobile Soundtrack _ Team of the season event _ Full version.m4a" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+        </section>
+        </section>
+    </section>
+
+    <!-- Vídeo Section -->
+    <section id="video" class="tab-content">
+        <section class="card">
+           <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeo do YouTube</title>
+</head>
+<body>
+    <h1>Vídeo do YouTube</h1>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FflktgXFIkg?si=bebpVvPJB4575Izz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</body>
+</html>
+            <h3>Música de Fundo</h3>
+            <audio controls>
+                <source src="Make It Look Easy _ New EA FC Mobile Soundtrack _ Team of the season event _ Full version.m4a" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+        </section>
+        <section class="card">
+            <h3>Adicionar Informações</h3>
+            <form>
+                <div class="mb-4">
+                    <label for="title-video">Título</label>
+                    <input type="text" id="title-video" placeholder="Título da informação" required>
+                </div>
+                <div class="mb-4">
+                    <label for="content-video">Conteúdo</label>
+                    <textarea id="content-video" rows="6" placeholder="Descreva a informação adicional..." required></textarea>
+                </div>
+                <button type="submit">Salvar Informação</button>
+            </form>
+        </section>
+    </section>
+
+    <!-- Dicas Section -->
+    <section id="dicas" class="tab-content">
+        <section class="card">
+            <h3>Dicas e Hacks</h3>
+            <div>
+                <h4 style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">Dicas Úteis</h4>
+                <ul style="list-style: disc; padding-left: 1.5rem;">
+                    <li>Jogando cada partida, voce poderá ganhar recompensas, passando de nivel e passando de fase, como Internacional 5,4 e etc.</li>
+                    <li>Ao adicionar Pique e Habilidade, segurando botão, voce pode correr rápido, e ao clicar ele vai dar drible.</li>
+                    <li>na opção dentro da partida, voce pode apertar nas tres opções no canto direito em cima e colocar figurinhas para um outro jogador poder ver.</li>
+                    <li>Segurando o botão passe voce podera passar um passe longo, e clicando poderá dar o passe curto.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="card">
+            <h3>Música de Fundo</h3>
+            <audio controls>
+                <source src="Make It Look Easy _ New EA FC Mobile Soundtrack _ Team of the season event _ Full version.m4a" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+        </section>
+        <section class="card">
+            <h3>Adicionar Dicas</h3>
+            <form>
+                <div class="mb-4">
+                    <label for="title-dicas">Título da Dica</label>
+                    <input type="text" id="title-dicas" placeholder="Título da dica" required>
+                </div>
+                <div class="mb-4">
+                    <label for="content-dicas">Descrição</label>
+                    <textarea id="content-dicas" rows="6" placeholder="Descreva a dica..." required></textarea>
+                </div>
+                <button type="submit">Salvar Dica</button>
+            </form>
+        </section>
+    </section>
+
+    <!-- Comentários Section -->
+    <section id="comentarios" class="tab-content">
+        <section class="card">
+            <h3>Comentários</h3>
+            <form>
+                <div class="mb-4">
+                    <label for="comment-input">Seu Comentário</label>
+                    <textarea id="comment-input" rows="4" placeholder="Escreva seu comentário..." required></textarea>
+                </div>
+                <button type="submit">Enviar Comentário</button>
+            </form>
+            <div id="comment-list" class="mt-4"></div>
+        </section>
+        <section class="card">
+            <h3>Música de Fundo</h3>
+            <audio controls>
+                <source src="Make It Look Easy _ New EA FC Mobile Soundtrack _ Team of the season event _ Full version.m4a" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+        </section>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Portal Multimídia Profissional. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JavaScript for Image Upload Preview -->
+    <script>
+        // Image upload preview for three inputs
+        document.getElementById('player-image-1').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const preview = document.getElementById('preview-image-1');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        });
+        document.getElementById('player-image-2').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const preview = document.getElementById('preview-image-2');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        });
+        document.getElementById('player-image-3').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const preview = document.getElementById('preview-image-3');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
